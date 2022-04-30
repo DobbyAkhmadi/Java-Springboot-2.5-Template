@@ -1,3 +1,19 @@
 spring:
   profiles:
-    active: dev
+    active: dev,qa
+
+api.version: 1.0
+swagger:
+    enabled: true
+    title: Company.Project.Documentation
+    description: Sample Swagger implementation for the `Project` service, leveraging annotations at the controller-method level.
+    useDefaultResponseMessages: false
+    enableUrlTemplating: false
+    deepLinking: true
+    defaultModelsExpandDepth: 1
+    defaultModelExpandDepth: 1
+    displayOperationId: false
+    displayRequestDuration: false
+    filter: true
+    maxDisplayedTags: 0
+    showExtensions: false;
