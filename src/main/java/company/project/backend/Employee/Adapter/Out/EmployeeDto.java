@@ -1,4 +1,4 @@
-package company.project.backend.Employee.Adapter.out;
+package company.project.backend.Employee.Adapter.Out;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

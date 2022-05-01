@@ -1,6 +1,6 @@
-package company.project.backend.Employee.Adapter.out.mapper;
+package company.project.backend.Employee.Adapter.Out.Mapper;
 
-import company.project.backend.Employee.Adapter.out.EmployeeDto;
+import company.project.backend.Employee.Adapter.Out.EmployeeDto;
 import company.project.backend.Employee.Domain.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

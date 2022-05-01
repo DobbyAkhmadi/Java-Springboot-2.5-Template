@@ -1,53 +1,121 @@
 package company.project.backend.APIController;
 
-import company.project.backend.Employee.Adapter.out.EmployeeDto;
+import company.project.backend.Employee.Adapter.Out.EmployeeDto;
+import company.project.backend.Employee.Application.UseCase.AddEmployeeUseCase;
+import company.project.backend.Employee.Application.UseCase.DeleteEmployeeUseCase;
 import company.project.backend.Employee.Application.UseCase.FindEmployeeUseCase;
-import company.project.backend.utility.ResourceNotFoundException;
+import company.project.backend.Employee.Application.UseCase.ModifyEmployeeUseCase;
+import company.project.backend.Employee.Domain.Employee;
+import company.project.backend.utility.ResponseHandler;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/employee")
 @RequiredArgsConstructor
+@ApiResponses(value = {
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @io.swagger.annotations.ApiResponse(code = 400, message = "This is a bad request, please follow the API documentation for the proper request format"),
+        @io.swagger.annotations.ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @io.swagger.annotations.ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @io.swagger.annotations.ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+        @io.swagger.annotations.ApiResponse(code = 500, message = "The server is down. Please bear with us."),
+}
+)
+@Api(tags="Employee", description = "Provides Employee Status API's.")
 public class EmployeeController {
-
+    private final AddEmployeeUseCase addEmployeeUseCase;
     private final FindEmployeeUseCase findEmployeeUseCase;
-    @ApiOperation(value = "Retrieves all information about employee ")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "ok"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "An unexpected error occurred")
-    })
-    @GetMapping("")
-    public ResponseEntity<List<EmployeeDto>> getAllEmployees() throws Exception {
+    private final ModifyEmployeeUseCase modifyEmployeeUseCase;
+    private final DeleteEmployeeUseCase deleteEmployeeUseCase;
+
+    @ApiOperation(value = "Retrieves all information about employee ",
+            notes = "Get a business {@link Company} containing information that describes the company",
+            produces = APPLICATION_JSON_VALUE,
+            response = Employee.class)
+    @GetMapping(value="",produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllEmployees() {
         try {
             List<EmployeeDto> employeeDtoList = findEmployeeUseCase.loadAllEmployee();
-            return ResponseEntity.ok().body(employeeDtoList);
+            return ResponseHandler.requestStatus(employeeDtoList);
         } catch(Exception e) {
-            throw new ResourceNotFoundException("Resource Not Found");
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(value = "id") UUID uuid) throws Exception {
 
+
+    @ApiOperation(value = "Retrieves information about employee by id ",
+            notes = "Get a business {@link Company} containing information that describes the company",
+            produces = APPLICATION_JSON_VALUE,
+            response = Employee.class)
+    @GetMapping(value = "/{id}",produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getEmployeeById(@PathVariable(value = "id") UUID uuid) {
         try {
             EmployeeDto employeeDto = findEmployeeUseCase.loadEmployeeById(uuid);
-            return ResponseEntity.ok().body(employeeDto);
+            return ResponseHandler.requestStatus(employeeDto);
         } catch(Exception e) {
-            throw new ResourceNotFoundException("Resource Not Found For This ID :: "+uuid);
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
     }
+
+    @ApiOperation(value = "Create new information about employee ",
+            notes = "Get a business {@link Company} containing information that describes the company",
+            produces = APPLICATION_JSON_VALUE,
+            response = Employee.class)
+    @PostMapping(value = "",produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createEmployee (@Valid Employee employeeBody) {
+        try {
+            EmployeeDto employeeDto = addEmployeeUseCase.saveEmployee(employeeBody);
+            return ResponseHandler.requestStatus(employeeDto);
+        }catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+    }
+
+    @ApiOperation(value = "Update new information about employee ",
+            notes = "Get a business {@link Company} containing information that describes the company",
+            produces = APPLICATION_JSON_VALUE,
+            response = Employee.class)
+    @PutMapping(value = "",produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateEmployee (@Valid Employee employeeBody) {
+        try {
+            EmployeeDto employeeDto = modifyEmployeeUseCase.updateEmployee(employeeBody);
+            return ResponseHandler.requestStatus(employeeDto);
+        }catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+    }
+
+    @ApiOperation(value = "Delete information about employee by id ",
+            notes = "Get a business {@link Company} containing information that describes the company",
+            produces = APPLICATION_JSON_VALUE,
+            response = Employee.class)
+    @DeleteMapping(value = "/{id}",produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteEmployee (@PathVariable ("id") String id) {
+        try {
+            EmployeeDto employeeDto = deleteEmployeeUseCase.deleteEmployee(UUID.fromString(id));
+            return ResponseHandler.requestStatus(employeeDto);
+        }catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+    }
+
 
 }
 

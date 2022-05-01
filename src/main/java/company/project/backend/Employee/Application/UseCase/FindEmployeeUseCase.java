@@ -1,6 +1,6 @@
 package company.project.backend.Employee.Application.UseCase;
 
-import company.project.backend.Employee.Adapter.out.EmployeeDto;
+import company.project.backend.Employee.Adapter.Out.EmployeeDto;
 
 import java.util.List;
 import java.util.UUID;

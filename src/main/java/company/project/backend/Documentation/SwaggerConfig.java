@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.*;
@@ -27,13 +29,15 @@ public class SwaggerConfig {
 
     @Bean
     public Docket eDesignApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo(swaggerConfigProperties.getApiVersion()))
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo(swaggerConfigProperties.getApiVersion()))
                 .enable(Boolean.valueOf(swaggerConfigProperties.getEnabled()))
                 .select().apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any()).build().pathMapping("/").directModelSubstitute(LocalDate.class, String.class)
                 .genericModelSubstitutes(ResponseEntity.class).useDefaultResponseMessages(Boolean.valueOf(swaggerConfigProperties.getUseDefaultResponseMessages()))
-                .enableUrlTemplating(Boolean.valueOf(swaggerConfigProperties.getEnableUrlTemplating()));
+                .enableUrlTemplating(Boolean.valueOf(swaggerConfigProperties.getEnableUrlTemplating()))
+                .select()
+                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .build();
     }
 
     @Bean
@@ -58,6 +62,10 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title(swaggerConfigProperties.getTitle())
                 .description(swaggerConfigProperties.getDescription())
-                .version(swaggerConfigProperties.getApiVersion()).build();
+                .version(swaggerConfigProperties.getApiVersion())
+                .license("Apache License Version 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
+                .contact(new Contact("Dobby Akhmadi", "http://google.com", "doby@springfrmework.guru"))
+                .build();
     }
 }

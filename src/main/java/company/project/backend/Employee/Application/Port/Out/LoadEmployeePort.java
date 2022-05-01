@@ -1,4 +1,4 @@
-package company.project.backend.Employee.Application.Port.out;
+package company.project.backend.Employee.Application.Port.Out;
 
 import company.project.backend.Employee.Domain.Employee;
 

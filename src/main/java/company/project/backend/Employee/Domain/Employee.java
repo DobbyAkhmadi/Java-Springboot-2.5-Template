@@ -1,5 +1,6 @@
 package company.project.backend.Employee.Domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -19,7 +20,10 @@ public class Employee {
 	@Id
 	@GeneratedValue
 	@Column(columnDefinition = "BINARY(16)")
+	@ApiModelProperty(notes = "ID UUID Auto Generated",allowEmptyValue = false)
 	private UUID id = UUID.randomUUID();
+	@ApiModelProperty(notes = "Employee Name",allowEmptyValue = true)
 	private String name;
+	@ApiModelProperty(notes = "Employee Address",allowEmptyValue = true)
 	private String address;
 }

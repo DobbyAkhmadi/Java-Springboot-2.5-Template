@@ -2,7 +2,7 @@ package company.project.backend.Bootstrap;
 
 
 import com.github.javafaker.Faker;
-import company.project.backend.Employee.Adapter.persistence.repositories.EmployeeRepository;
+import company.project.backend.Employee.Adapter.Persistence.Repositories.EmployeeRepository;
 import company.project.backend.Employee.Domain.Employee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
