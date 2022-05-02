@@ -2,6 +2,8 @@ package company.project.backend.Employee.Domain;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +20,14 @@ import java.util.UUID;
 
 public class Employee {
 	@Id
-	@GeneratedValue
-	@Column(columnDefinition = "BINARY(16)")
-	@ApiModelProperty(notes = "ID UUID Auto Generated",allowEmptyValue = false)
-	private UUID id = UUID.randomUUID();
-	@ApiModelProperty(notes = "Employee Name",allowEmptyValue = true)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "uuid", columnDefinition = "char(36)")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@ApiModelProperty(notes = "Employee UUID")
+	private UUID uuid;
+	@ApiModelProperty(notes = "Employee Name")
 	private String name;
-	@ApiModelProperty(notes = "Employee Address",allowEmptyValue = true)
+	@ApiModelProperty(notes = "Employee Address")
 	private String address;
 }

@@ -1,38 +1,34 @@
 package company.project.backend.Employee.Application.Services;
 
-import company.project.backend.Employee.Adapter.Out.EmployeeDto;
-import company.project.backend.Employee.Adapter.Out.Mapper.EmployeeMapper;
 import company.project.backend.Employee.Application.Port.Out.LoadEmployeePort;
-import company.project.backend.Employee.Application.UseCase.FindEmployeeUseCase;
 import company.project.backend.Employee.Domain.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FindEmployeeService implements FindEmployeeUseCase {
+public class FindEmployeeService {
     private final LoadEmployeePort loadEmployeePort;
-    private final EmployeeMapper employeeMapper;
-    @Override
-    public List<EmployeeDto> loadAllEmployee() throws Exception {
+
+    public List<Employee> loadAllEmployeePagination(Integer pageNo, Integer pageSize, String sortBy) throws Exception {
         try
         {
-            List<Employee> employeeList = loadEmployeePort.LoadAllEmployeePort();
-            return employeeMapper.toEmployeeDtoList(employeeList);
+            return loadEmployeePort.LoadAllEmployeePaginationPort(pageNo, pageSize,sortBy);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception(e);
         }
     }
 
-    @Override
-    public EmployeeDto loadEmployeeById(UUID uuid) throws Exception {
+    public Employee loadEmployeeById(UUID uuid) throws Exception {
         try
         {
-            Employee employees = loadEmployeePort.loadEmployeeById(uuid);
-            return employeeMapper.toEmployeeDto(employees);
+            Optional<Employee> employee = loadEmployeePort.loadEmployeeById(uuid);
+            return employee.orElseThrow();
         } catch (Exception e) {
             throw new Exception(e);
         }

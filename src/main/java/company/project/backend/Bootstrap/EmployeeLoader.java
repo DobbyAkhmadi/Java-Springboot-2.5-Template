@@ -30,6 +30,6 @@ public class EmployeeLoader  {
                     .name(name).build();
             employeeList.add(employee);
         }
-        return employeeRepository.saveAll(employeeList);
+        return (List<Employee>) employeeRepository.saveAll(employeeList);
     }
 }
