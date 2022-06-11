@@ -12,6 +12,7 @@ Current Features
 
 Upcoming Features
 - Support multiple Database
+- Support Dynamic Pagination Parameters and Multiple arrays
 - Support GRPC
 - Support Logger
 - Support Multiple Request Body
