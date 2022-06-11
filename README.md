@@ -11,7 +11,7 @@ Current Features
 - Repository Pattern + pagination
 
 Upcoming Features
-- Support multiple Database
+- Support Multiple Database
 - Support Dynamic Pagination Parameters and Multiple arrays
 - Support GRPC
 - Support Logger
@@ -21,11 +21,6 @@ Upcoming Features
 
 on maven builder add "CLEAN INSTALL" and "SPRING-BOOT:RUN"
 
-host : localhost:9090
+Host : localhost:9090
 
 Check Swagger http://localhost:9090/swagger-ui/
-
-
-
-- GET http://127.0.0.1:9090/api/v1/employee/
-- GET 
