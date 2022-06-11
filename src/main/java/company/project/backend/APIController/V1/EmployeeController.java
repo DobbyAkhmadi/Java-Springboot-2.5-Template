@@ -50,7 +50,7 @@ public class EmployeeController {
             notes = "Get a business {@link Company} containing information that describes the company",
             produces = APPLICATION_JSON_VALUE,
             response = Employee.class)
-    @GetMapping(value="/",produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value="",produces = APPLICATION_JSON_VALUE)
     public List<Object> getAllEmployeePagination(@RequestParam (defaultValue = "0") Integer no,
                                                  @RequestParam (defaultValue = "10") Integer size,
                                                  @RequestParam (defaultValue = "uuid")String sort) {
@@ -71,7 +71,7 @@ public class EmployeeController {
             notes = "Get a business {@link Company} containing information that describes the company",
             produces = APPLICATION_JSON_VALUE,
             response = Employee.class)
-    @GetMapping(value = "/id",produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/uuid",produces = APPLICATION_JSON_VALUE)
     public Object getEmployeeById(@Valid Employee employeeBody) {
         try {
             UUID uuid = employeeBody.getUuid();
@@ -117,7 +117,7 @@ public class EmployeeController {
             notes = "Get a business {@link Company} containing information that describes the company",
             produces = APPLICATION_JSON_VALUE,
             response = Employee.class)
-    @DeleteMapping(value = "/delete",produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/uuid",produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     private Object deleteEmployee (@Valid Employee employeeBody) {
         try {
